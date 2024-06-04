@@ -6,16 +6,17 @@ public class Lista {
 
 
     private List<Persona> personas;
-    private Parqueadero listaParqueaderos [] = new Parqueadero[3];
-    List<Espacio> listaEspacios = new ArrayList<Espacio>();
-    public void infoParqueaderos(String lugar, int cantidadEspacio, Espacio espacio){
-        listaParqueaderos[0]=new Parqueadero("Simon Bolivar",100,listaEspacios.add(new Espacio()));
-        listaParqueaderos[1]=new Parqueadero("Interno",450,listaEspacios.add(new Espacio()));
-        listaParqueaderos[2]=new Parqueadero();
-    }
+
+
+
+
+
+
     public Lista() {
         personas = new ArrayList<Persona>();
     }
+
+
 
     public List<Persona> getPersonas() {
         return personas;

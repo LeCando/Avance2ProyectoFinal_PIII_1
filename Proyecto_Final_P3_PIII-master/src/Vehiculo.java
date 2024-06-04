@@ -1,12 +1,13 @@
 public class Vehiculo {
 
-    private String tipoVehiculo;
     private String placa;
 
+    private String tipoVehiculo;
 
-    public Vehiculo(String tipoVehiculo, String placa) {
-        this.tipoVehiculo = tipoVehiculo;
+
+    public Vehiculo(String placa, String tipoVehiculo) {
         this.placa = placa;
+        this.tipoVehiculo = tipoVehiculo;
     }
 
     public String getTipoVehiculo() {

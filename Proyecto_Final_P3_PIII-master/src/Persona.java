@@ -51,7 +51,7 @@ public class Persona {
         return  " \n\nNombre: " + nombre +
                 " \nId: " + id +
                 " \nTipo de Persona: " + tipoPersona+
-                " \nTipo vehiculo: "+vehiculo.getTipoVehiculo()+
-                " \nPlaca: "+ vehiculo.getPlaca();
+                " \nPlaca: "+vehiculo.getPlaca()+
+                " \nTipo de Vehiculo: "+ vehiculo.getTipoVehiculo();
     }
 }

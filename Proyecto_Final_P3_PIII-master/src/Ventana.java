@@ -13,8 +13,14 @@ public class Ventana {
     private JButton editarUsuarioButton;
     private JButton buscarButton;
     private JButton eliminarUsuarioButton;
+    private JTextField textField1nompreParqueadero;
+    private JTextField textField1espacioParqueadero;
+    private JButton editarParqueaderoButton;
+    private JButton agregarParqueaderoButton1;
+    private JButton buscarParqueaderoButton;
 
     private Lista personas = new Lista();
+    private ListaParqueadero parqueaderos = new ListaParqueadero();
 
     public Ventana() {
         quemarDatos();
@@ -107,17 +113,17 @@ public class Ventana {
             public void actionPerformed(ActionEvent e) {
                 String idBuscar = textField1idBanner.getText();
                 Persona persona = personas.buscarPersona(idBuscar);
-                if (persona != null) {
-                    textField1nombreUsuario.setText(persona.getNombre());
-                    textField1nombreUsuario.setEnabled(false);
-                    textField1idBanner.setEnabled(false);
-                    comboBox1tipoPersona.setSelectedItem(persona.getTipoPersona());
-                    comboBox1tipoPersona.setEnabled(false);
-                    textField1placa.setText(persona.getVehiculo().getPlaca());
-                    comboBox2tipoAutomovil.setSelectedItem(persona.getVehiculo().getTipoVehiculo());
-                } else {
-                    JOptionPane.showMessageDialog(null, "No se encontró ningún usuario con el ID de banner proporcionado.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+                    if (persona != null) {
+                        textField1nombreUsuario.setText(persona.getNombre());
+                        textField1nombreUsuario.setEnabled(false);
+                        textField1idBanner.setEnabled(true);
+                        comboBox1tipoPersona.setSelectedItem(persona.getTipoPersona());
+                        comboBox1tipoPersona.setEnabled(false);
+                        textField1placa.setText(persona.getVehiculo().getPlaca());
+                        comboBox2tipoAutomovil.setSelectedItem(persona.getVehiculo().getTipoVehiculo());
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No se encontró ningún usuario con el ID de banner proporcionado.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
             }
         });
         eliminarUsuarioButton.addActionListener(new ActionListener() {
@@ -133,6 +139,55 @@ public class Ventana {
                 }
             }
         });
+        agregarParqueaderoButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    // Crear un nuevo objeto Parqueadero con los datos ingresados
+                    Parqueadero parqueadero = new Parqueadero(
+                            textField1nompreParqueadero.getText(),
+                            Integer.parseInt(textField1espacioParqueadero.getText())
+                    );
+                    parqueaderos.agregarParqueaderoP(parqueadero);
+
+                    JOptionPane.showMessageDialog(null, "Se ha agregado el Parqueadero correctamente\n" +
+                            "\nNombre del Parqueadero: " + textField1nompreParqueadero.getText() +
+                            "\nEspacio del parqueadero: " + Integer.parseInt(textField1espacioParqueadero.getText()));
+                    limpiarDatosParqueadero();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Error al agregar parqueadero: " + ex.getMessage());
+                }
+                System.out.println(parqueaderos.listarParqueadero());
+            }
+        });
+        editarParqueaderoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            try{
+                parqueaderos.editarParqueadero(textField1nompreParqueadero.getText(),Integer.parseInt(textField1espacioParqueadero.getText()));
+                JOptionPane.showMessageDialog(null, "Se ha agregado el Parqueadero correctamente\n" +
+                        "\nNombre del Parqueadero: " + textField1nompreParqueadero.getText() +
+                        "\nEspacio del parqueadero: " + Integer.parseInt(textField1espacioParqueadero.getText()));
+                System.out.println(parqueaderos.listarParqueadero());
+            }catch (Exception ex){
+                JOptionPane.showMessageDialog(null, "Error al modificar el campo " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            }
+        });
+        buscarParqueaderoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String nombre = textField1nompreParqueadero.getText();
+                Parqueadero parqueadero = parqueaderos.buscarParqeuadero(nombre);
+                if (parqueadero != null) {
+                    textField1nompreParqueadero.setEnabled(false);
+                    textField1espacioParqueadero.setText(String.valueOf(parqueadero.getCantidadEspacio()));
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se encontró ningún usuario con el ID de banner proporcionado.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
     }
     public void limpiarDatos(){
         textField1nombreUsuario.setText("");
@@ -141,10 +196,13 @@ public class Ventana {
         textField1placa.setText("");
         comboBox2tipoAutomovil.setSelectedIndex(0);
     }
-
+    public void limpiarDatosParqueadero(){
+        textField1nompreParqueadero.setText("");
+        textField1espacioParqueadero.setText("");
+    }
     public void quemarDatos() {
         try {
-            personas.adicionarElementos(new Persona("Israel", "A00107465", "Estudiante", new Vehiculo("Automovil","PCX3903")));
+            personas.adicionarElementos(new Persona("Israel", "A00107465", "Estudiante", new Vehiculo("PCX3903","Automovil")));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

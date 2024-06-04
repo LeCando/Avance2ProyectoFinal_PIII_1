@@ -2,11 +2,16 @@ public class Parqueadero {
     private String lugar;
     private int cantidadEspacio;
     private Espacio espacio;
-    public Parqueadero(){
+    public Parqueadero(String simonBolivar, int cantidadEspacio, boolean add){
 
     }
 
     public Parqueadero(String lugar, int cantidadEspacio, Espacio espacio) {
+        this.lugar = lugar;
+        this.cantidadEspacio = cantidadEspacio;
+        this.espacio = espacio;
+    }
+    public Parqueadero(String lugar, int cantidadEspacio) {
         this.lugar = lugar;
         this.cantidadEspacio = cantidadEspacio;
         this.espacio = espacio;
@@ -34,5 +39,12 @@ public class Parqueadero {
 
     public void setEspacio(Espacio espacio) {
         this.espacio = espacio;
+    }
+
+    @Override
+    public String toString() {
+        return  "\nNombre Parqueadero: " + lugar +
+                "\nEspacio de parqueadero: " + cantidadEspacio
+                ;
     }
 }

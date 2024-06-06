@@ -11,6 +11,14 @@ public class ListaParqueadero {
         parqueaderos = new ArrayList<Parqueadero>();
     }
 
+    public List<Parqueadero> getParqueaderos() {
+        return parqueaderos;
+    }
+
+    public void setParqueaderos(List<Parqueadero> parqueaderos) {
+        this.parqueaderos = parqueaderos;
+    }
+
     public Parqueadero buscarParqeuadero(String lugar) {
         for (Parqueadero pa : parqueaderos)
             if (pa.getLugar().equals(lugar))
@@ -35,6 +43,14 @@ public class ListaParqueadero {
             parqueadero.setCantidadEspacio(nuevoCantidadEspacio);
         } else {
             throw new Exception("No se encontró ninguna perona con el id : " + nombre);
+        }
+    }
+    public void eliminarParqueadero(String lugar) throws Exception {
+        Parqueadero parqueadero = buscarParqeuadero(lugar);
+        if (parqueadero != null) {
+            parqueaderos.remove(parqueadero);
+        } else {
+            throw new Exception("El parqueadero " + lugar + " no existe.");
         }
     }
 

@@ -18,12 +18,16 @@ public class Ventana {
     private JButton editarParqueaderoButton;
     private JButton agregarParqueaderoButton1;
     private JButton buscarParqueaderoButton;
+    private JList list1;
+    private JButton eliminarParqueaderoButton;
+    private JList list2;
 
     private Lista personas = new Lista();
     private ListaParqueadero parqueaderos = new ListaParqueadero();
 
     public Ventana() {
         quemarDatos();
+        llenarJlistUsuarios();
         System.out.println(personas.listarPersonas());
         agregarUsuarioButton.addActionListener(new ActionListener() {
             @Override
@@ -48,12 +52,12 @@ public class Ventana {
                                 "\nPlaca: " + textField1placa.getText() +
                                 "\nTipo de vehiculo: " + comboBox2tipoAutomovil.getSelectedItem().toString()
                         );
-
                         limpiarDatos();
                     }
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
+                llenarJlistUsuarios();
                 System.out.println(personas.listarPersonas());
             }
         });
@@ -105,6 +109,7 @@ public class Ventana {
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Error al modificar el usuario: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
+                llenarJlistUsuarios();
                 System.out.println(personas.listarPersonas());
             }
         });
@@ -118,7 +123,7 @@ public class Ventana {
                         textField1nombreUsuario.setEnabled(false);
                         textField1idBanner.setEnabled(true);
                         comboBox1tipoPersona.setSelectedItem(persona.getTipoPersona());
-                        comboBox1tipoPersona.setEnabled(false);
+                        comboBox1tipoPersona.setEnabled(true);
                         textField1placa.setText(persona.getVehiculo().getPlaca());
                         comboBox2tipoAutomovil.setSelectedItem(persona.getVehiculo().getTipoVehiculo());
                     } else {
@@ -137,6 +142,7 @@ public class Ventana {
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Error al eliminar usuario: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
+                llenarJlistUsuarios();
             }
         });
         agregarParqueaderoButton1.addActionListener(new ActionListener() {
@@ -157,6 +163,7 @@ public class Ventana {
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Error al agregar parqueadero: " + ex.getMessage());
                 }
+                llenarJlistParqueaderos();
                 System.out.println(parqueaderos.listarParqueadero());
             }
         });
@@ -172,6 +179,7 @@ public class Ventana {
             }catch (Exception ex){
                 JOptionPane.showMessageDialog(null, "Error al modificar el campo " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
+            llenarJlistParqueaderos();
             }
         });
         buscarParqueaderoButton.addActionListener(new ActionListener() {
@@ -180,12 +188,26 @@ public class Ventana {
                 String nombre = textField1nompreParqueadero.getText();
                 Parqueadero parqueadero = parqueaderos.buscarParqeuadero(nombre);
                 if (parqueadero != null) {
-                    textField1nompreParqueadero.setEnabled(false);
+                    textField1nompreParqueadero.setEnabled(true);
                     textField1espacioParqueadero.setText(String.valueOf(parqueadero.getCantidadEspacio()));
 
                 } else {
                     JOptionPane.showMessageDialog(null, "No se encontró ningún usuario con el ID de banner proporcionado.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
+            }
+        });
+        eliminarParqueaderoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String buscarLugar = textField1nompreParqueadero.getText();
+                try {
+                    parqueaderos.eliminarParqueadero(buscarLugar);
+                    JOptionPane.showMessageDialog(null, "Parqueadero eliminado correctamente.");
+                    limpiarDatos();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Error al eliminar parqueadero: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                llenarJlistParqueaderos();
             }
         });
     }
@@ -207,8 +229,20 @@ public class Ventana {
             throw new RuntimeException(e);
         }
     }
-
-
+    public void llenarJlistUsuarios(){
+        DefaultListModel dl = new DefaultListModel<>();
+        for(Persona p:personas.getPersonas()){
+            dl.addElement(p);
+        }
+        list1.setModel(dl);
+    }
+    public void llenarJlistParqueaderos(){
+        DefaultListModel dl = new DefaultListModel<>();
+        for(Parqueadero pa:parqueaderos.getParqueaderos()){
+            dl.addElement(pa);
+        }
+        list2.setModel(dl);
+    }
     public static void main(String[] args) {
         JFrame frame = new JFrame("Ventana");
         frame.setContentPane(new Ventana().tabbedPane1);

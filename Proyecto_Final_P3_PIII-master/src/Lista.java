@@ -23,17 +23,11 @@ public class Lista {
     }
 
     public void adicionarElementos(Persona p) throws Exception {
-        int count = 0;
-        for (Persona pa : personas) {
-            if (pa.getId().equals(p.getId())) {
-                count++;
-            }
-        }
-        if (count >= 2) {
+        if(buscarPersona(p.getId())==null) {
+            personas.add(p);
+        }else{
             throw new Exception("Persona con este ID de banner ya existe más de dos veces");
         }
-
-        personas.add(p);
     }
 
     public List<Persona> listarPersonas(){

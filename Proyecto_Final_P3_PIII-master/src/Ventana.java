@@ -43,8 +43,7 @@ public class Ventana {
                         JOptionPane.showMessageDialog(null, "Todos los campos deben ser llenados", "Error", JOptionPane.ERROR_MESSAGE);
                         return;
                     } else {
-                        personas.adicionarElementos(new Persona(textField1nombreUsuario.getText(), textField1idBanner.getText(), comboBox1tipoPersona.getSelectedItem().toString(), new Vehiculo(textField1placa.getText(), comboBox2tipoAutomovil.getSelectedItem().toString())
-                        ));
+                        personas.adicionarElementos(new Persona(textField1nombreUsuario.getText(),textField1idBanner.getText(),comboBox1tipoPersona.getSelectedItem().toString(),new Vehiculo(textField1placa.getText(),comboBox2tipoAutomovil.getSelectedItem().toString())));
                         JOptionPane.showMessageDialog(null, "Se ha agreagado el usuario correctamente\n"+
                                 "\nNombre: " + textField1nombreUsuario.getText() +
                                 "\nID: " + textField1idBanner.getText() +
@@ -55,7 +54,7 @@ public class Ventana {
                         limpiarDatos();
                     }
                 } catch (Exception ex) {
-                    throw new RuntimeException(ex);
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
                 }
                 llenarJlistUsuarios();
                 System.out.println(personas.listarPersonas());

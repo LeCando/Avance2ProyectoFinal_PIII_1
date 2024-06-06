@@ -5,6 +5,7 @@ public class Persona {
     private String tipoPersona;
 
     private Vehiculo vehiculo;
+    //ARRAY VEHICULO 2 VEHICULOS
 
     public Persona(String nombre, String id, String tipoPersona, Vehiculo vehiculo) {
         this.nombre = nombre;

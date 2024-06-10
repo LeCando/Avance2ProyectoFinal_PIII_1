@@ -21,6 +21,10 @@ public class Ventana {
     private JList list1;
     private JButton eliminarParqueaderoButton;
     private JList list2;
+    private JTextField textField1idUsuarioPlaca;
+    private JButton agregarVehiculosButton;
+    private JButton eliminarVehiculosButton;
+    private JTextField textField1placaeliminar;
 
     private Lista personas = new Lista();
     private ListaParqueadero parqueaderos = new ListaParqueadero();
@@ -36,20 +40,16 @@ public class Ventana {
                 try {
                     if (textField1nombreUsuario.getText().isEmpty() ||
                             textField1idBanner.getText().isEmpty() ||
-                            comboBox1tipoPersona.getSelectedItem() == null ||
-                            textField1placa.getText().isEmpty() ||
-                            comboBox2tipoAutomovil.getSelectedItem() == null) {
+                            comboBox1tipoPersona.getSelectedItem() == null) {
 
                         JOptionPane.showMessageDialog(null, "Todos los campos deben ser llenados", "Error", JOptionPane.ERROR_MESSAGE);
                         return;
                     } else {
-                        personas.adicionarElementos(new Persona(textField1nombreUsuario.getText(),textField1idBanner.getText(),comboBox1tipoPersona.getSelectedItem().toString(),new Vehiculo(textField1placa.getText(),comboBox2tipoAutomovil.getSelectedItem().toString())));
-                        JOptionPane.showMessageDialog(null, "Se ha agreagado el usuario correctamente\n"+
+                        personas.adicionarElementos(new Persona(textField1nombreUsuario.getText(), textField1idBanner.getText(), comboBox1tipoPersona.getSelectedItem().toString()));
+                        JOptionPane.showMessageDialog(null, "Se ha agreagado el usuario correctamente\n" +
                                 "\nNombre: " + textField1nombreUsuario.getText() +
                                 "\nID: " + textField1idBanner.getText() +
-                                "\nTipo de persona: " + comboBox1tipoPersona.getSelectedItem().toString() +
-                                "\nPlaca: " + textField1placa.getText() +
-                                "\nTipo de vehiculo: " + comboBox2tipoAutomovil.getSelectedItem().toString()
+                                "\nTipo de persona: " + comboBox1tipoPersona.getSelectedItem().toString()
                         );
                         limpiarDatos();
                     }
@@ -67,9 +67,7 @@ public class Ventana {
                 try {
                     if (textField1nombreUsuario.getText().isEmpty() ||
                             textField1idBanner.getText().isEmpty() ||
-                            comboBox1tipoPersona.getSelectedItem() == null ||
-                            textField1placa.getText().isEmpty() ||
-                            comboBox2tipoAutomovil.getSelectedItem() == null) {
+                            comboBox1tipoPersona.getSelectedItem() == null) {
 
                         JOptionPane.showMessageDialog(null, "Todos los campos deben ser llenados", "Error", JOptionPane.ERROR_MESSAGE);
                         return;
@@ -77,30 +75,18 @@ public class Ventana {
                         personas.editar(
                                 textField1nombreUsuario.getText(),
                                 textField1idBanner.getText(),
-                                comboBox1tipoPersona.getSelectedItem().toString(),
-                                new Vehiculo(
-                                        textField1placa.getText(),
-                                        comboBox2tipoAutomovil.getSelectedItem().toString()
-                                ),
-                                new Vehiculo(
-                                        textField1placa.getText(),
-                                        comboBox2tipoAutomovil.getSelectedItem().toString()
-                                )
+                                comboBox1tipoPersona.getSelectedItem().toString()
                         );
                         JOptionPane.showMessageDialog(null, "Se ha modificado el usuario correctamente\n" +
                                 "\nNombre: " + textField1nombreUsuario.getText() +
                                 "\nID: " + textField1idBanner.getText() +
-                                "\nTipo de persona: " + comboBox1tipoPersona.getSelectedItem().toString() +
-                                "\nPlaca: " + textField1placa.getText() +
-                                "\nTipo de vehículo: " + comboBox2tipoAutomovil.getSelectedItem().toString()
+                                "\nTipo de persona: " + comboBox1tipoPersona.getSelectedItem().toString()
                         );
 
                         // Habilitar los campos para agregar otro usuario
                         textField1nombreUsuario.setEnabled(true);
                         textField1idBanner.setEnabled(true);
                         comboBox1tipoPersona.setEnabled(true);
-                        textField1placa.setEnabled(true);
-                        comboBox2tipoAutomovil.setEnabled(true);
 
                         // Limpia los campos después de editar al usuario
                         limpiarDatos();
@@ -117,17 +103,16 @@ public class Ventana {
             public void actionPerformed(ActionEvent e) {
                 String idBuscar = textField1idBanner.getText();
                 Persona persona = personas.buscarPersona(idBuscar);
-                    if (persona != null) {
-                        textField1nombreUsuario.setText(persona.getNombre());
-                        textField1nombreUsuario.setEnabled(false);
-                        textField1idBanner.setEnabled(true);
-                        comboBox1tipoPersona.setSelectedItem(persona.getTipoPersona());
-                        comboBox1tipoPersona.setEnabled(true);
-                        textField1placa.setText(persona.getVehiculo().getPlaca());
-                        comboBox2tipoAutomovil.setSelectedItem(persona.getVehiculo().getTipoVehiculo());
-                    } else {
-                        JOptionPane.showMessageDialog(null, "No se encontró ningún usuario con el ID de banner proporcionado.", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
+                if (persona != null) {
+                    textField1nombreUsuario.setText(persona.getNombre());
+                    textField1nombreUsuario.setEnabled(false);
+                    textField1idBanner.setEnabled(true);
+                    comboBox1tipoPersona.setSelectedItem(persona.getTipoPersona());
+                    comboBox1tipoPersona.setEnabled(true);
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se encontró ningún usuario con el ID de banner proporcionado.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         eliminarUsuarioButton.addActionListener(new ActionListener() {
@@ -169,16 +154,16 @@ public class Ventana {
         editarParqueaderoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            try{
-                parqueaderos.editarParqueadero(textField1nompreParqueadero.getText(),Integer.parseInt(textField1espacioParqueadero.getText()));
-                JOptionPane.showMessageDialog(null, "Se ha agregado el Parqueadero correctamente\n" +
-                        "\nNombre del Parqueadero: " + textField1nompreParqueadero.getText() +
-                        "\nEspacio del parqueadero: " + Integer.parseInt(textField1espacioParqueadero.getText()));
-                System.out.println(parqueaderos.listarParqueadero());
-            }catch (Exception ex){
-                JOptionPane.showMessageDialog(null, "Error al modificar el campo " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-            llenarJlistParqueaderos();
+                try {
+                    parqueaderos.editarParqueadero(textField1nompreParqueadero.getText(), Integer.parseInt(textField1espacioParqueadero.getText()));
+                    JOptionPane.showMessageDialog(null, "Se ha agregado el Parqueadero correctamente\n" +
+                            "\nNombre del Parqueadero: " + textField1nompreParqueadero.getText() +
+                            "\nEspacio del parqueadero: " + Integer.parseInt(textField1espacioParqueadero.getText()));
+                    System.out.println(parqueaderos.listarParqueadero());
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Error al modificar el campo " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                llenarJlistParqueaderos();
             }
         });
         buscarParqueaderoButton.addActionListener(new ActionListener() {
@@ -209,8 +194,65 @@ public class Ventana {
                 llenarJlistParqueaderos();
             }
         });
+        agregarVehiculosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String idPersona = textField1idUsuarioPlaca.getText();
+                    String placa = textField1placa.getText();
+                    String tipoVehiculo = comboBox2tipoAutomovil.getSelectedItem().toString();
+
+                    // Verificar si el ID de la persona está vacío
+                    if (idPersona.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "El campo ID de Persona está vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    // Buscar la persona en la lista utilizando el ID proporcionado
+                    Persona persona = personas.buscarPersona(idPersona);
+
+                    // Verificar si se encontró la persona
+                    if (persona != null) {
+                        // Verificar si la persona ya tiene dos vehículos
+                        if (persona.getVehiculos().size() >= 2) {
+                            throw new Exception("El límite por persona es dos vehículos.");
+                        }
+
+                        // Crear el vehículo
+                        Vehiculo vehiculo = new Vehiculo(placa, tipoVehiculo);
+
+                        // Agregar el vehículo a la persona encontrada
+                        persona.addVehiculo(vehiculo);
+
+                        JOptionPane.showMessageDialog(null, "Vehículo agregado correctamente a la persona con ID: " + idPersona);
+
+                        // Limpiar los campos después de agregar el vehículo
+                        textField1placa.setText("");
+                        comboBox2tipoAutomovil.setSelectedIndex(0);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No se encontró ninguna persona con el ID proporcionado.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Error al agregar vehículo: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+
+        eliminarVehiculosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String placa = textField1placaeliminar.getText();
+                try {
+                    personas.eliminarVehiculoPorPlaca(placa);
+                    JOptionPane.showMessageDialog(null, "Se ha eliminado el vehículo con la placa: " + placa);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Error al eliminar vehículo: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
     }
-    public void limpiarDatos(){
+        public void limpiarDatos(){
         textField1nombreUsuario.setText("");
         textField1idBanner.setText("");
         comboBox1tipoPersona.setSelectedIndex(0);
@@ -223,7 +265,7 @@ public class Ventana {
     }
     public void quemarDatos() {
         try {
-            personas.adicionarElementos(new Persona("Israel", "A00107465", "Estudiante", new Vehiculo("PCX3903","Automovil")));
+            personas.adicionarElementos(new Persona("Israel", "A00107465", "Estudiante"));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

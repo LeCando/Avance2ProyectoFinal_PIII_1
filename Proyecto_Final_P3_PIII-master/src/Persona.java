@@ -1,19 +1,19 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Persona {
 
     private String nombre;
     private String id;
     private String tipoPersona;
+    private List<Vehiculo> vehiculos;
 
-    private Vehiculo vehiculo;
-    //ARRAY VEHICULO 2 VEHICULOS
-
-    public Persona(String nombre, String id, String tipoPersona, Vehiculo vehiculo) {
+    public Persona(String nombre, String id, String tipoPersona) {
         this.nombre = nombre;
         this.id = id;
         this.tipoPersona = tipoPersona;
-        this.vehiculo = vehiculo;
+        this.vehiculos = new ArrayList<>();
     }
-
 
     public String getNombre() {
         return nombre;
@@ -39,20 +39,35 @@ public class Persona {
         this.tipoPersona = tipoPersona;
     }
 
-    public Vehiculo getVehiculo() {
-        return vehiculo;
+    public List<Vehiculo> getVehiculos() {
+        return vehiculos;
     }
 
-    public void setVehiculo(Vehiculo vehiculo) {
-        this.vehiculo = vehiculo;
+    public void setVehiculos(List<Vehiculo> vehiculos) {
+        this.vehiculos = vehiculos;
     }
+
+    public boolean addVehiculo(Vehiculo vehiculo) {
+        if (vehiculos.size() < 2) {
+            vehiculos.add(vehiculo);
+            return true;
+        } else {
+            System.out.println("No se pueden agregar más de 2 vehículos.");
+            return false;
+        }
+    }
+
 
     @Override
     public String toString() {
-        return  " \n\nNombre: " + nombre +
+        String result = " \n\nNombre: " + nombre +
                 " \nId: " + id +
-                " \nTipo de Persona: " + tipoPersona+
-                " \nPlaca: "+vehiculo.getPlaca()+
-                " \nTipo de Vehiculo: "+ vehiculo.getTipoVehiculo();
+                " \nTipo de Persona: " + tipoPersona;
+        for (int i = 0; i < vehiculos.size(); i++) {
+            result += " \nVehículo " + (i + 1) +
+                    " \n  Placa: " + vehiculos.get(i).getPlaca() +
+                    " \n  Tipo de Vehículo: " + vehiculos.get(i).getTipoVehiculo();
+        }
+        return result;
     }
 }

@@ -4,39 +4,30 @@ import java.util.List;
 
 public class Lista {
 
-
     private List<Persona> personas;
 
-
-
-
-
-
     public Lista() {
-        personas = new ArrayList<Persona>();
+        personas = new ArrayList<>();
     }
-
-
 
     public List<Persona> getPersonas() {
         return personas;
     }
 
     public void adicionarElementos(Persona p) throws Exception {
-        if(buscarPersona(p.getId())==null) {
+        if (buscarPersona(p.getId()) == null) {
             personas.add(p);
-        }else{
+        } else {
             throw new Exception("Persona con este ID de banner ya existe más de dos veces");
         }
     }
 
-    public List<Persona> listarPersonas(){
+    public List<Persona> listarPersonas() {
         List<Persona> lista = new LinkedList<>();
-        for (Persona e: personas)
+        for (Persona e : personas)
             lista.add(e);
         return lista;
     }
-
 
     public Persona buscarPersona(String id) {
         for (Persona p : personas)
@@ -44,13 +35,12 @@ public class Lista {
                 return p;
         return null;
     }
-    public void editar(String nuevoNombre, String id, String nuevoTipoPersona, Vehiculo nuevaPlaca, Vehiculo nuevoTipoVehiculo)  throws Exception {
+
+    public void editar(String nuevoNombre, String id, String nuevoTipoPersona) throws Exception {
         Persona persona = buscarPersona(id);
         if (persona != null) {
             persona.setNombre(nuevoNombre);
             persona.setTipoPersona(nuevoTipoPersona);
-            persona.setVehiculo(nuevaPlaca);
-            persona.setVehiculo(nuevoTipoVehiculo);
         } else {
             throw new Exception("No se encontró ninguna perona con el id : " + id);
         }
@@ -65,7 +55,29 @@ public class Lista {
         }
     }
 
+    public void eliminarVehiculoPorPlaca(String placa) throws Exception {
+        boolean vehiculoEliminado = false;
+        for (Persona persona : personas) {
+            List<Vehiculo> vehiculos = persona.getVehiculos();
+            for (int i = 0; i < vehiculos.size(); i++) {
+                if (vehiculos.get(i).getPlaca().equals(placa)) {
+                    vehiculos.remove(i);
+                    vehiculoEliminado = true;
+                }
+            }
+        }
+        if (!vehiculoEliminado) {
+            throw new Exception("No se encontró ningún vehículo con la placa: " + placa);
+        }
+    }
 
 
-
+    public void agregarVehiculoAPersona(String idPersona, Vehiculo vehiculo) throws Exception {
+        Persona persona = buscarPersona(idPersona);
+        if (persona != null) {
+            persona.addVehiculo(vehiculo);
+        } else {
+            throw new Exception("La persona con el ID " + idPersona + " no está en la lista.");
+        }
+    }
 }

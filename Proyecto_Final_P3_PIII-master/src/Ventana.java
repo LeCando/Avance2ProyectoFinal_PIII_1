@@ -207,7 +207,11 @@ public class Ventana {
                         JOptionPane.showMessageDialog(null, "El campo ID de Persona está vacío.", "Error", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
-
+                    //Validar placa
+                    if (!personas.validarPlaca(placa)){
+                        JOptionPane.showMessageDialog(null, "La placa del vehiculo no es valida");
+                        return;
+                    }
                     // Buscar la persona en la lista utilizando el ID proporcionado
                     Persona persona = personas.buscarPersona(idPersona);
 

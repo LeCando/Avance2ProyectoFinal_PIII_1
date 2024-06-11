@@ -45,13 +45,17 @@ public class Ventana {
                         JOptionPane.showMessageDialog(null, "Todos los campos deben ser llenados", "Error", JOptionPane.ERROR_MESSAGE);
                         return;
                     } else {
-                        personas.adicionarElementos(new Persona(textField1nombreUsuario.getText(), textField1idBanner.getText(), comboBox1tipoPersona.getSelectedItem().toString()));
-                        JOptionPane.showMessageDialog(null, "Se ha agreagado el usuario correctamente\n" +
-                                "\nNombre: " + textField1nombreUsuario.getText() +
-                                "\nID: " + textField1idBanner.getText() +
-                                "\nTipo de persona: " + comboBox1tipoPersona.getSelectedItem().toString()
-                        );
-                        limpiarDatos();
+                        if(validarStringLetras(textField1nombreUsuario.getText().trim())) {
+                            personas.adicionarElementos(new Persona(textField1nombreUsuario.getText(), textField1idBanner.getText(), comboBox1tipoPersona.getSelectedItem().toString()));
+                            JOptionPane.showMessageDialog(null, "Se ha agreagado el usuario correctamente\n" +
+                                    "\nNombre: " + textField1nombreUsuario.getText() +
+                                    "\nID: " + textField1idBanner.getText() +
+                                    "\nTipo de persona: " + comboBox1tipoPersona.getSelectedItem().toString()
+                            );
+                            limpiarDatos();
+                        }else{
+                            JOptionPane.showMessageDialog(null,"Ingresar solo letras en el nombre de usuario");
+                        }
                     }
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -132,23 +136,27 @@ public class Ventana {
         agregarParqueaderoButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    // Crear un nuevo objeto Parqueadero con los datos ingresados
-                    Parqueadero parqueadero = new Parqueadero(
-                            textField1nompreParqueadero.getText(),
-                            Integer.parseInt(textField1espacioParqueadero.getText())
-                    );
-                    parqueaderos.agregarParqueaderoP(parqueadero);
-
-                    JOptionPane.showMessageDialog(null, "Se ha agregado el Parqueadero correctamente\n" +
-                            "\nNombre del Parqueadero: " + textField1nompreParqueadero.getText() +
-                            "\nEspacio del parqueadero: " + Integer.parseInt(textField1espacioParqueadero.getText()));
-                    limpiarDatosParqueadero();
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "Error al agregar parqueadero: " + ex.getMessage());
+                if(validarStringLetras(textField1nompreParqueadero.getText().trim())){
+                    try {
+                        // Crear un nuevo objeto Parqueadero con los datos ingresados
+                        Parqueadero parqueadero = new Parqueadero(
+                                textField1nompreParqueadero.getText(),
+                                Integer.parseInt(textField1espacioParqueadero.getText())
+                        );
+                        parqueaderos.agregarParqueaderoP(parqueadero);
+    
+                        JOptionPane.showMessageDialog(null, "Se ha agregado el Parqueadero correctamente\n" +
+                                "\nNombre del Parqueadero: " + textField1nompreParqueadero.getText() +
+                                "\nEspacio del parqueadero: " + Integer.parseInt(textField1espacioParqueadero.getText()));
+                        limpiarDatosParqueadero();
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "Error al agregar parqueadero: " + ex.getMessage());
+                    }
+                    llenarJlistParqueaderos();
+                    System.out.println(parqueaderos.listarParqueadero());
+                }else{
+                    JOptionPane.showMessageDialog(null,"Ingresar solo letras para el nombre del parqueadero");
                 }
-                llenarJlistParqueaderos();
-                System.out.println(parqueaderos.listarParqueadero());
             }
         });
         editarParqueaderoButton.addActionListener(new ActionListener() {
@@ -287,6 +295,9 @@ public class Ventana {
             dl.addElement(pa);
         }
         list2.setModel(dl);
+    }
+    public static boolean validarStringLetras(String dato){
+        return dato.matches("[a-zA-Z ]*");
     }
     public static void main(String[] args) {
         JFrame frame = new JFrame("Ventana");
